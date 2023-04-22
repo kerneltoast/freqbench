@@ -62,8 +62,8 @@ FREQ_IDLE_TIME = 5  # sec
 # To reduce chances of an array realloc + copy during benchmark runs
 PREALLOC_SECONDS = 300  # seconds of power sampling
 
-# CoreMark PERFORMANCE_RUN params with 300,000 iterations
-COREMARK_ITERATIONS = 300000
+# CoreMark PERFORMANCE_RUN params with 600,000 iterations
+COREMARK_ITERATIONS = 600000
 COREMARK_PERFORMANCE_RUN = ["0x0", "0x0", "0x66", str(COREMARK_ITERATIONS), "7", "1", "2000"]
 
 # Blank lines are for rounded corner & camera cutout protection
@@ -84,30 +84,6 @@ BANNER = """
 """
 
 SYS_CPU = "/sys/devices/system/cpu"
-
-# "Constants" evaluated at runtime
-for psy_node in POWER_SUPPLY_NODES:
-    if os.path.exists(psy_node):
-        POWER_SUPPLY = psy_node
-        break
-
-POWER_VOLTAGE_NODE = f"{POWER_SUPPLY}/voltage_now"
-for node in POWER_CURRENT_NODES:
-    path = f"{POWER_SUPPLY}/{node}"
-    if os.path.exists(path):
-        POWER_CURRENT_NODE = path
-        break
-
-psy_name = os.readlink(POWER_SUPPLY)
-for fg_string, interval in POWER_SAMPLE_FG_DEFAULT_INTERVALS.items():
-    if fg_string in psy_name:
-        POWER_SAMPLE_INTERVAL = interval
-        break
-
-if len(sys.argv) > 1:
-    override_interval = int(sys.argv[1])
-    if override_interval > 0:
-        POWER_SAMPLE_INTERVAL = override_interval
 
 # Calculate prealloc slots now that the interval is known
 PREALLOC_SLOTS = int(PREALLOC_SECONDS / (POWER_SAMPLE_INTERVAL / 1000))
@@ -130,60 +106,14 @@ def run_cmd(args):
     else:
         raise ValueError(f"Subprocess {args} failed with exit code {proc.returncode}:\n{proc.stdout}")
 
-def sample_power():
-    ma = int(read_file(POWER_CURRENT_NODE)) * POWER_CURRENT_FACTOR / 1000
-    mv = int(read_file(POWER_VOLTAGE_NODE)) / 1000
-
-    mw = ma * mv / 1000
-    return ma, mv, abs(mw)
-
-def start_power_thread(sample_interval=POWER_SAMPLE_INTERVAL):
-    def _power_thread():
-        global _power_samples
-
-        sample_dest = _prealloc_samples
-
-        count = 0
-        while True:
-            # Sleep before first sample to avoid a low first reading
-            time.sleep(sample_interval / 1000)
-
-            # Check stop flag immediately after sleep to avoid a low last reading
-            if _stop_power_mon:
-                pr_debug("Stopping power monitor due to global stop flag")
-                break
-
-            current, voltage, power = sample_power()
-            pr_debug(f"Power: {power} mW\t(sample {count} from {current} mA * {voltage} mV)")
-
-            try:
-                sample_dest[count] = power
-            except IndexError:
-                pr_debug("Pre-allocated sample slots exhausted, falling back to dynamic allocation")
-                # If out of pre-allocated slots
-                sample_dest.append(power)
-
-            count += 1
-
-        if count < len(sample_dest):
-            pr_debug(f"Truncating to first {count} samples from pre-allocated array")
-            _power_samples = sample_dest[:count]
-
-    pr_debug("Starting power monitor thread")
-    thread = threading.Thread(target=_power_thread, daemon=True)
-    thread.start()
-    return thread
-
-def stop_power_thread(thread):
-    global _stop_power_mon
-
-    pr_debug("Setting flag to stop power monitor")
-    _stop_power_mon = True
-    pr_debug("Waiting for power monitor to stop")
-    thread.join()
-    _stop_power_mon = False
-
-    return _power_samples
+def sample_energy(cluster):
+    # Read out the energy used by this specific cluster as reported by the PMIC
+    meter_pattern = r'.*T=(\d+).*' + r'VDD_CPUCL' + str(cluster) + r'], ' + r'(\d+)'
+    power_data = read_file("/sys/bus/iio/devices/iio:device0/energy_value")
+    result = re.search(meter_pattern, power_data)
+    ms = int(result.group(1))
+    uj = int(result.group(2))
+    return ms, uj
 
 def write_cpu(cpu, node, content):
     pr_debug(f"Writing CPU value: cpu{cpu}/{node} => {content}")
@@ -196,17 +126,16 @@ def read_file(node):
         pr_debug(f"Reading file: {node} = {content}")
         return content
 
-def create_power_stats(time_ns, samples):
-    sec = time_ns / 1e9
+def create_power_stats(time_ms, uj):
+    sec = time_ms / 1e3
 
-    power = statistics.mean(samples)
-    mj = power * sec
+    power = uj / time_ms
+    mj = uj / 1000
     joules = mj / 1000
 
     return {
         "elapsed_sec": sec,
-        "elapsed_ns": time_ns,
-        "power_samples": samples,
+        "elapsed_ns": time_ms * 1e6,
         "power_mean": power,
         "energy_millijoules": mj,
         "energy_joules": joules,
@@ -276,46 +205,6 @@ def check_charging(node, charging_value, charging_warned):
 
     return charging_warned
 
-def init_power():
-    global POWER_CURRENT_FACTOR
-
-    pr_debug(f"Using power supply: {POWER_SUPPLY}")
-
-    charging_warned = False
-    charging_warned = check_charging(f"{POWER_SUPPLY}/status", "Charging", charging_warned)
-    charging_warned = check_charging(f"/sys/class/power_supply/battery/status", "Charging", charging_warned)
-    charging_warned = check_charging(f"/sys/class/power_supply/usb/present", "1", charging_warned)
-    charging_warned = check_charging(f"/sys/class/power_supply/dc/present", "1", charging_warned)
-
-    # Some PMICs may give unstable readings at this point
-    pr_debug("Waiting for power usage to settle for initial current measurement")
-    time.sleep(5)
-    # Maxim PMICs used on Exynos devices report current in mA, not µA
-    ref_current = int(read_file(POWER_CURRENT_NODE))
-    # Assumption: will never be below 1 mA
-    if abs(ref_current) <= 1000:
-        POWER_CURRENT_FACTOR = 1000
-    pr_debug(f"Scaling current by {POWER_CURRENT_FACTOR}x (derived from initial sample: {ref_current})")
-
-    print(f"Sampling power every {POWER_SAMPLE_INTERVAL} ms")
-    pr_debug(f"Pre-allocated {PREALLOC_SLOTS} sample slots for {PREALLOC_SECONDS} seconds")
-    pr_debug(f"Power sample interval adjusted for power supply: {psy_name}")
-    print("Baseline power usage: ", end="", flush=True)
-    pr_debug("Waiting for power usage to settle")
-    time.sleep(15)
-    pr_debug()
-
-    pr_debug("Measuring base power usage with only housekeeping CPU")
-    # The power used for sampling might affect results here, so sample less often
-    thread = start_power_thread(sample_interval=POWER_SAMPLE_INTERVAL * 2)
-    time.sleep(60)
-    base_power_samples = stop_power_thread(thread)
-    base_power = statistics.median(base_power_samples)
-    print(f"{base_power:.0f} mW")
-    print()
-
-    return base_power, base_power_samples
-
 def main():
     bench_start_time = time.time()
 
@@ -325,13 +214,17 @@ def main():
     pr_debug("Initializing CPU states")
     bench_cpus, cpu_count = init_cpus()
 
-    pr_debug("Initializing power measurements")
-    base_power, base_power_samples = init_power()
+    pr_debug("Waiting for power usage to settle")
+    time.sleep(30)
 
     pr_debug("Starting benchmark")
     pr_debug()
 
     cpus_data = {}
+    # Tensor has 4 little CPUs, 2 big CPUs, and 2 prime CPUs
+    cpu_to_cluster = [0, 0, 0, 0, 1, 1, 2, 2]
+    # To move housekeeping over to the next cluster for better measurements
+    cluster_to_affinity = [4, 6, 0]
     for cpu in bench_cpus:
         print()
         print(f"===== CPU {cpu} =====")
@@ -343,6 +236,15 @@ def main():
 
         pr_debug("Onlining CPU")
         write_cpu(cpu, "online", "1")
+
+        # Move housekeeping to the next cluster so power readings aren't affected
+        cluster = cpu_to_cluster[cpu]
+        new_housekeeping_cpu = cluster_to_affinity[cluster]
+        write_cpu(new_housekeeping_cpu, "online", "1")
+        write_cpu(new_housekeeping_cpu, "cpufreq/scaling_governor", "userspace")
+        freqs = get_cpu_freqs(new_housekeeping_cpu)
+        write_cpu(new_housekeeping_cpu, "cpufreq/scaling_setspeed", str(min(freqs)))
+        os.sched_setaffinity(0, {new_housekeeping_cpu})
 
         pr_debug("Setting governor")
         write_cpu(cpu, "cpufreq/scaling_governor", "userspace")
@@ -386,20 +288,23 @@ def main():
             time.sleep(3)
 
             pr_debug("Measuring idle power usage")
-            thread = start_power_thread()
+            start_ms, start_uj = sample_energy(cluster)
             time.sleep(FREQ_IDLE_TIME)
-            idle_power_samples = stop_power_thread(thread)
-            idle_power = statistics.mean(idle_power_samples)
-            idle_mj = idle_power * FREQ_IDLE_TIME
-            idle_joules = idle_mj / 1000
+            end_ms, end_uj = sample_energy(cluster)
+            idle_uj = end_uj - start_uj
+            idle_ms = end_ms - start_ms
+            idle_power = idle_uj / idle_ms
+            idle_joules = idle_uj / 1e6
             pr_debug(f"Idle: {idle_power:4.0f} mW    {idle_joules:4.1f} J")
 
             pr_debug("Running CoreMark...")
-            thread = start_power_thread()
+            start_ms, start_uj = sample_energy(cluster)
             start_time = time.time_ns()
             cm_out = run_cmd(["taskset", "-c", f"{cpu}", "coremark", *COREMARK_PERFORMANCE_RUN])
             end_time = time.time_ns()
-            power_samples = stop_power_thread(thread)
+            end_ms, end_uj = sample_energy(cluster)
+            uj = end_uj - start_uj
+            ms = end_ms - start_ms
 
             pr_debug(cm_out)
             elapsed_sec = (end_time - start_time) / 1e9
@@ -417,15 +322,12 @@ def main():
             match = re.search(r'Iterations\s+:\s+(\d+)', cm_out)
             iters = float(match.group(1))
 
-            # Adjust for base power usage
-            power_samples = [sample - base_power for sample in power_samples]
-
             # Calculate power values
-            power = statistics.mean(power_samples)
+            power = uj / ms
             # CoreMarks/MHz as per EEMBC specs
             cm_mhz = score / mhz
             # mW * sec = mJ
-            mj = power * elapsed_sec
+            mj = uj / 1000
             joules = mj / 1000
             # ULPMark-CM score = iterations per millijoule
             ulpmark_score = iters / mj
@@ -434,12 +336,12 @@ def main():
 
             cpu_data["freqs"][freq] = {
                 "active": {
-                    **create_power_stats(end_time - start_time, power_samples),
+                    **create_power_stats(ms, uj),
                     "coremark_score": score,
                     "coremarks_per_mhz": cm_mhz,
                     "ulpmark_cm_score": ulpmark_score
                 },
-                "idle": create_power_stats(int(FREQ_IDLE_TIME * 1e9), idle_power_samples),
+                "idle": create_power_stats(idle_ms, idle_uj),
             }
 
         # In case the CPU shares a freq domain with the housekeeping CPU, e.g. cpu1
@@ -468,11 +370,8 @@ def main():
     data = {
         "version": 1,
         "total_elapsed_sec": bench_finish_time - bench_start_time,
-        "housekeeping": create_power_stats(int(5 * 1e9), base_power_samples),
         "cpus": cpus_data,
         "meta": {
-            "housekeeping_cpu": HOUSEKEEPING_CPU,
-            "power_sample_interval": POWER_SAMPLE_INTERVAL,
             "cpu_count": cpu_count,
         },
     }

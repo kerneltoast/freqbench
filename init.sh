@@ -185,6 +185,9 @@ if uname -r | grep -q '^5\.' && grep -q Qualcomm /proc/cpuinfo; then
     fi
 fi
 
+# Tensor: Increase sampling rate of PMIC energy meter to the max (1000 Hz)
+try_write /sys/bus/iio/devices/iio:device0/sampling_rate 1000
+
 cat /proc/interrupts > /tmp/pre_bench_interrupts.txt
 
 py_args=()
