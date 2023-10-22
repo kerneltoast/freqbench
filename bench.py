@@ -109,7 +109,7 @@ def run_cmd(args):
 def sample_energy(cluster):
     # Read out the energy used by this specific cluster as reported by the PMIC
     meter_pattern = r'.*T=(\d+).*' + r'VDD_CPUCL' + str(cluster) + r'], ' + r'(\d+)'
-    power_data = read_file("/sys/bus/iio/devices/iio:device0/energy_value")
+    power_data = read_file("/sys/bus/iio/devices/iio:device1/energy_value")
     result = re.search(meter_pattern, power_data)
     ms = int(result.group(1))
     uj = int(result.group(2))
@@ -221,10 +221,10 @@ def main():
     pr_debug()
 
     cpus_data = {}
-    # Tensor has 4 little CPUs, 2 big CPUs, and 2 prime CPUs
-    cpu_to_cluster = [0, 0, 0, 0, 1, 1, 2, 2]
+    # Tensor G3 has 4 little CPUs, 4 big CPUs, and 1 prime CPU
+    cpu_to_cluster = [0, 0, 0, 0, 1, 1, 1, 1, 2]
     # To move housekeeping over to the next cluster for better measurements
-    cluster_to_affinity = [4, 6, 0]
+    cluster_to_affinity = [4, 8, 0]
     for cpu in bench_cpus:
         print()
         print(f"===== CPU {cpu} =====")
