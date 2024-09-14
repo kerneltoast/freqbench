@@ -221,10 +221,10 @@ def main():
     pr_debug()
 
     cpus_data = {}
-    # Tensor G3 has 4 little CPUs, 4 big CPUs, and 1 prime CPU
-    cpu_to_cluster = [0, 0, 0, 0, 1, 1, 1, 1, 2]
+    # Tensor G4 has 4 little CPUs, 3 big CPUs, and 1 prime CPU
+    cpu_to_cluster = [0, 0, 0, 0, 1, 1, 1, 2]
     # To move housekeeping over to the next cluster for better measurements
-    cluster_to_affinity = [4, 8, 0]
+    cluster_to_affinity = [4, 7, 0]
     for cpu in bench_cpus:
         print()
         print(f"===== CPU {cpu} =====")
