@@ -45,3 +45,4 @@ These are reference freqbench results that have been collected from various devi
 | sm8350     | SM8350    | Snapdragon 888  | Xiaomi Mi 11            | Unknown  |
 | gs201      | GS201     | Tensor G2       | Google Pixel 7 Pro      | Verified |
 | zuma       | ZUMA      | Tensor G3       | Google Pixel 8 Pro      | Verified |
+| zumapro    | ZUMAPRO   | Tensor G4       | Google Pixel 9 Pro      | Verified |
