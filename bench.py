@@ -108,12 +108,29 @@ def run_cmd(args):
 
 def sample_energy(cluster):
     # Read out the energy used by this specific cluster as reported by the PMIC
-    meter_pattern = r'.*T=(\d+).*' + r'VDD_CPUCL' + str(cluster) + r'], ' + r'(\d+)'
-    power_data = read_file("/sys/bus/iio/devices/iio:device1/energy_value")
-    result = re.search(meter_pattern, power_data)
-    ms = int(result.group(1))
-    uj = int(result.group(2))
-    return ms, uj
+    # Each cluster has two rails that must be summed; each rail has its own timestamp
+    rail_names = {
+        0: ("S4M_VDD_CPU", "S11M_VDD_CPU_M"),
+        1: ("S3M_VDD_CPU1", "S12M_VDD_CPU1_M"),
+        2: ("S2M_VDD_CPU2", "S13M_VDD_CPU2_M"),
+    }
+    rails = rail_names[cluster]
+    power_data = read_file("/sys/bus/iio/devices/iio:device0/energy_value")
+    samples = []
+    for rail in rails:
+        pattern = r'.*T=(\d+).*\[' + re.escape(rail) + r'\], ' + r'(\d+)'
+        result = re.search(pattern, power_data)
+        samples.append((int(result.group(1)), int(result.group(2))))
+    return samples
+
+def delta_energy(start_samples, end_samples):
+    total_uj = 0
+    total_ms = 0
+    for (start_ms, start_uj), (end_ms, end_uj) in zip(start_samples, end_samples):
+        total_uj += end_uj - start_uj
+        total_ms += end_ms - start_ms
+    avg_ms = total_ms / len(start_samples)
+    return avg_ms, total_uj
 
 def write_cpu(cpu, node, content):
     pr_debug(f"Writing CPU value: cpu{cpu}/{node} => {content}")
@@ -221,10 +238,13 @@ def main():
     pr_debug()
 
     cpus_data = {}
-    # Tensor G4 has 4 little CPUs, 3 big CPUs, and 1 prime CPU
-    cpu_to_cluster = [0, 0, 0, 0, 1, 1, 1, 2]
+    # Tensor G5 has 2 little CPUs, 5 mid CPUs, and 1 big CPU.
+    # FYI: While there are 4 clock domains (CPUs 0-1, 2-4, 5-6, and 7),
+    # there are only 3 power rails. CPUs 5-6 (mid) and CPU 7 (big) share a
+    # power rail, so they are treated as one cluster for power measurements.
+    cpu_to_cluster = [0, 0, 1, 1, 1, 2, 2, 2]
     # To move housekeeping over to the next cluster for better measurements
-    cluster_to_affinity = [4, 7, 0]
+    cluster_to_affinity = [2, 7, 0]
     for cpu in bench_cpus:
         print()
         print(f"===== CPU {cpu} =====")
@@ -288,23 +308,21 @@ def main():
             time.sleep(3)
 
             pr_debug("Measuring idle power usage")
-            start_ms, start_uj = sample_energy(cluster)
+            idle_start = sample_energy(cluster)
             time.sleep(FREQ_IDLE_TIME)
-            end_ms, end_uj = sample_energy(cluster)
-            idle_uj = end_uj - start_uj
-            idle_ms = end_ms - start_ms
+            idle_end = sample_energy(cluster)
+            idle_ms, idle_uj = delta_energy(idle_start, idle_end)
             idle_power = idle_uj / idle_ms
             idle_joules = idle_uj / 1e6
             pr_debug(f"Idle: {idle_power:4.0f} mW    {idle_joules:4.1f} J")
 
             pr_debug("Running CoreMark...")
-            start_ms, start_uj = sample_energy(cluster)
+            active_start = sample_energy(cluster)
             start_time = time.time_ns()
             cm_out = run_cmd(["taskset", "-c", f"{cpu}", "coremark", *COREMARK_PERFORMANCE_RUN])
             end_time = time.time_ns()
-            end_ms, end_uj = sample_energy(cluster)
-            uj = end_uj - start_uj
-            ms = end_ms - start_ms
+            active_end = sample_energy(cluster)
+            ms, uj = delta_energy(active_start, active_end)
 
             pr_debug(cm_out)
             elapsed_sec = (end_time - start_time) / 1e9

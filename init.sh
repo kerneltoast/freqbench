@@ -186,7 +186,14 @@ if uname -r | grep -q '^5\.' && grep -q Qualcomm /proc/cpuinfo; then
 fi
 
 # Tensor: Increase sampling rate of PMIC energy meter to the max (1000 Hz)
-try_write /sys/bus/iio/devices/iio:device1/sampling_rate 1000
+try_write /sys/bus/iio/devices/iio:device0/sampling_rate 1000
+
+# Tensor G5: Change the rail monitored by one of the ODPM channels to
+# S13M_VDD_CPU2_M. ODPM doesn't have enough channels to monitor all rails at
+# once and Google didn't enable monitoring of S13M_VDD_CPU2_M by default, so we
+# need to override one of the channels to monitor S13M_VDD_CPU2_M.
+# Channel 0 monitors AUR so we just override that one.
+try_write /sys/bus/iio/devices/iio:device0/enabled_rails CH0=buck_13m
 
 cat /proc/interrupts > /tmp/pre_bench_interrupts.txt
 
