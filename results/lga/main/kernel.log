@@ -1,0 +1,135 @@
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x410fd801]
+[    0.000000] Linux version 6.6.98-Sultan (sultan@sultan-box) (aarch64-linux-gnu-gcc (GCC) 14.2.0, GNU ld (GNU Binutils) 2.44) #1 SMP PREEMPT Wed Feb 25 14:48:57 PST 2026
+[    0.000000] KASLR enabled
+[    0.000000] Machine model: FRANKEL MP based on LGA
+[    0.000000] OF: reserved mem: 0x0000000aff000000..0x0000000affffffff (16384 KiB) map non-reusable faceauth_dsp
+[    0.000000] OF: reserved mem: 0x0000000afd000000..0x0000000afeffffff (32768 KiB) map non-reusable faceauth_tpu
+[    0.000000] OF: reserved mem: 0x0000000af8500000..0x0000000afcffffff (76800 KiB) map non-reusable famodel
+[    0.000000] Reserved memory: created CMA memory pool at 0x0000000af7500000, size 16 MiB
+[    0.000000] OF: reserved mem: initialized node faprev, compatible id shared-dma-pool
+[    0.000000] OF: reserved mem: 0x0000000af7500000..0x0000000af84fffff (16384 KiB) map reusable faprev
+[    0.000000] OF: reserved mem: 0x0000000af2500000..0x0000000af74fffff (81920 KiB) map non-reusable farawimg
+[    0.000000] Reserved memory: created CMA memory pool at 0x00000000bfc00000, size 4 MiB
+[    0.000000] OF: reserved mem: initialized node google_gem_dma_region, compatible id shared-dma-pool
+[    0.000000] OF: reserved mem: 0x00000000bfc00000..0x00000000bfffffff (4096 KiB) map reusable google_gem_dma_region
+[    0.000000] kvm [0]: pKVM IOMMU reserved memory not PMD-aligned
+[    0.000000] OF: reserved mem: initialized node pkvm_iommu_cma, compatible id pkvm,cma
+[    0.000000] OF: reserved mem: 0x0000000af1d00000..0x0000000af24fffff (8192 KiB) map reusable pkvm_iommu_cma
+[    0.000000] Reserved memory: created CMA memory pool at 0x0000000ad0900000, size 532 MiB
+[    0.000000] OF: reserved mem: initialized node vframe, compatible id shared-dma-pool
+[    0.000000] OF: reserved mem: 0x0000000ad0900000..0x0000000af1cfffff (544768 KiB) map reusable vframe
+[    0.000000] Reserved memory: created CMA memory pool at 0x0000000acc100000, size 72 MiB
+[    0.000000] OF: reserved mem: initialized node vstream, compatible id shared-dma-pool
+[    0.000000] OF: reserved mem: 0x0000000acc100000..0x0000000ad08fffff (73728 KiB) map reusable vstream
+[    0.000000] OF: reserved mem: 0x00000000053d1000..0x00000000053d147f (1 KiB) nomap non-reusable nvmem@53d1000
+[    0.000000] OF: reserved mem: 0x000000000543e000..0x000000000543ffff (8 KiB) nomap non-reusable boot_metadata@543e000
+[    0.000000] OF: reserved mem: 0x000000000900c000..0x000000000900efff (12 KiB) map non-reusable cp_aoc_rmem@900c000
+[    0.000000] OF: reserved mem: 0x0000000009010000..0x000000000904ffff (256 KiB) nomap non-reusable xhci_dma@9010000
+[    0.000000] OF: reserved mem: 0x0000000009050000..0x000000000905bfff (48 KiB) nomap non-reusable xhci_dma_buffer@9050000
+[    0.000000] OF: reserved mem: initialized node pkvm_guest_firmware, compatible id linux,pkvm-guest-firmware-memory
+[    0.000000] OF: reserved mem: 0x000000008af00000..0x000000008afbffff (768 KiB) nomap non-reusable pkvm_guest_firmware
+[    0.000000] OF: reserved mem: 0x000000008b20f000..0x000000008b20ffff (4 KiB) nomap non-reusable cpu_stats_carveout@8b20f000
+[    0.000000] Reserved memory: created DMA memory pool at 0x000000008b400000, size 0 MiB
+[    0.000000] OF: reserved mem: initialized node gdmc_tracepoint_dma_buff@8b400000, compatible id shared-dma-pool
+[    0.000000] OF: reserved mem: 0x000000008b400000..0x000000008b41ffff (128 KiB) nomap non-reusable gdmc_tracepoint_dma_buff@8b400000
+[    0.000000] Reserved memory: created DMA memory pool at 0x000000008b420000, size 0 MiB
+[    0.000000] OF: reserved mem: initialized node goog_mba_gdmc_iface_dma_region@8b420000, compatible id shared-dma-pool
+[    0.000000] OF: reserved mem: 0x000000008b420000..0x000000008b423fff (16 KiB) nomap non-reusable goog_mba_gdmc_iface_dma_region@8b420000
+[    0.000000] OF: reserved mem: 0x000000008b600000..0x000000008b7fffff (2048 KiB) nomap non-reusable goog_bl31_mem_log_buff@8b600000
+[    0.000000] Reserved memory: created DMA memory pool at 0x000000008cdf4000, size 0 MiB
+[    0.000000] OF: reserved mem: initialized node cpm_tracepoint_ipc_dma_buff@8cdf4000, compatible id shared-dma-pool
+[    0.000000] OF: reserved mem: 0x000000008cdf4000..0x000000008cdf7fff (16 KiB) nomap non-reusable cpm_tracepoint_ipc_dma_buff@8cdf4000
+[    0.000000] OF: reserved mem: 0x000000008d200000..0x00000000901fffff (49152 KiB) nomap non-reusable aoc@8d200000
+[    0.000000] OF: reserved mem: 0x0000000090700000..0x000000009070ffff (64 KiB) nomap non-reusable cdd_log_reserved@90700000
+[    0.000000] OF: reserved mem: 0x0000000090714000..0x0000000090717fff (16 KiB) nomap non-reusable debug_kinfo_reserved@90714000
+[    0.000000] OF: reserved mem: 0x0000000091200000..0x00000000915fffff (4096 KiB) nomap non-reusable cdd@91200000
+[    0.000000] OF: reserved mem: 0x00000000951f8000..0x00000000951fffff (32 KiB) nomap non-reusable cdd_header@951f8000
+[    0.000000] OF: reserved mem: 0x0000000095200000..0x00000000955fffff (4096 KiB) map non-reusable ramoops@95200000
+[    0.000000] OF: reserved mem: 0x0000000095600000..0x00000000956fffff (1024 KiB) nomap non-reusable bldr_log_reserved@95600000
+[    0.000000] OF: reserved mem: 0x0000000097000000..0x00000000973fffff (4096 KiB) nomap non-reusable xhci_dma_dram@97000000
+[    0.000000] OF: reserved mem: 0x000000009fc00000..0x00000000a0ffffff (20480 KiB) nomap non-reusable tpu_fw@9fc00000
+[    0.000000] OF: reserved mem: 0x00000000a1000000..0x00000000a11fffff (2048 KiB) map non-reusable vpu_fw@a1000000
+[    0.000000] OF: reserved mem: 0x00000000a1360000..0x00000000a137ffff (128 KiB) nomap non-reusable iif_wait_table@a1360000
+[    0.000000] OF: reserved mem: 0x00000000a1380000..0x00000000a139ffff (128 KiB) nomap non-reusable iif_signal_table@a1380000
+[    0.000000] OF: reserved mem: 0x00000000a1400000..0x00000000a1cfffff (9216 KiB) nomap non-reusable gxp_secure_data@a1400000
+[    0.000000] OF: reserved mem: 0x00000000a1d00000..0x00000000a1ffffff (3072 KiB) nomap non-reusable gxp_fw@a1d00000
+[    0.000000] OF: reserved mem: 0x00000000a2000000..0x00000000a23fffff (4096 KiB) nomap non-reusable gxp_mcu_fw@a2000000
+[    0.000000] OF: reserved mem: 0x00000000a2400000..0x00000000a61b0fff (63172 KiB) nomap non-reusable gsa-gme@a2400000
+[    0.000000] OF: reserved mem: 0x00000000a61b1000..0x00000000a61b1fff (4 KiB) nomap non-reusable gsa_reserved_log@a61b1000
+[    0.000000] OF: reserved mem: 0x00000000a61b2000..0x00000000a61b3fff (8 KiB) nomap non-reusable gsa_reserved_log_extended@a61b2000
+[    0.000000] OF: reserved mem: 0x00000000b9f00000..0x00000000bbffffff (33792 KiB) nomap non-reusable gpu_fw@b9f00000
+[    0.000000] OF: reserved mem: 0x00000000be000000..0x00000000beffffff (16384 KiB) nomap non-reusable abl@be000000
+[    0.000000] OF: reserved mem: 0x00000000e8000000..0x00000000e9ffffff (32768 KiB) map non-reusable cp_rmem_1@e8000000
+[    0.000000] OF: reserved mem: 0x00000000ea400000..0x00000000eaffffff (12288 KiB) map non-reusable cp_rmem@ea400000
+[    0.000000] OF: reserved mem: 0x00000000f6200000..0x00000000f6200fff (4 KiB) map non-reusable cp_msi_rmem@f6200000
+[    0.000000] OF: reserved mem: 0x00000000f6fce000..0x00000000f6ffffff (200 KiB) nomap non-reusable gc_rmem@f6fce000
+[    0.000000] OF: reserved mem: 0x00000000f7000000..0x00000000ffdfffff (145408 KiB) nomap non-reusable sec_dram
+[    0.000000] OF: reserved mem: 0x00000000ffe00000..0x00000000fff26fff (1180 KiB) nomap non-reusable bl31_dram
+[    0.000000] kvm [0]: Reserved 66 MiB at 0xac7a00000
+[    0.000000] Zone ranges:
+[    0.000000]   Normal   [mem 0x0000000080000000-0x0000000affffffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] NoSplit zone start for each node
+[    0.000000] NoMerge zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000080000000-0x000000008aefffff]
+[    0.000000]   node   0: [mem 0x000000008af00000-0x000000008afbffff]
+[    0.000000]   node   0: [mem 0x000000008afc0000-0x000000008b20efff]
+[    0.000000]   node   0: [mem 0x000000008b20f000-0x000000008b20ffff]
+[    0.000000]   node   0: [mem 0x000000008b210000-0x000000008b3fffff]
+[    0.000000]   node   0: [mem 0x000000008b400000-0x000000008b423fff]
+[    0.000000]   node   0: [mem 0x000000008b424000-0x000000008b5fffff]
+[    0.000000]   node   0: [mem 0x000000008b600000-0x000000008b7fffff]
+[    0.000000]   node   0: [mem 0x000000008b800000-0x000000008cdf3fff]
+[    0.000000]   node   0: [mem 0x000000008cdf4000-0x000000008cdf7fff]
+[    0.000000]   node   0: [mem 0x000000008cdf8000-0x000000008d1fffff]
+[    0.000000]   node   0: [mem 0x000000008d200000-0x00000000901fffff]
+[    0.000000]   node   0: [mem 0x0000000090200000-0x00000000906fffff]
+[    0.000000]   node   0: [mem 0x0000000090700000-0x000000009070ffff]
+[    0.000000]   node   0: [mem 0x0000000090710000-0x0000000090713fff]
+[    0.000000]   node   0: [mem 0x0000000090714000-0x0000000090717fff]
+[    0.000000]   node   0: [mem 0x0000000090718000-0x00000000911fffff]
+[    0.000000]   node   0: [mem 0x0000000091200000-0x00000000915fffff]
+[    0.000000]   node   0: [mem 0x0000000091600000-0x00000000951f7fff]
+[    0.000000]   node   0: [mem 0x00000000951f8000-0x00000000951fffff]
+[    0.000000]   node   0: [mem 0x0000000095200000-0x00000000955fffff]
+[    0.000000]   node   0: [mem 0x0000000095600000-0x00000000956fffff]
+[    0.000000]   node   0: [mem 0x0000000095700000-0x0000000096ffffff]
+[    0.000000]   node   0: [mem 0x0000000097000000-0x00000000973fffff]
+[    0.000000]   node   0: [mem 0x0000000097400000-0x000000009fbfffff]
+[    0.000000]   node   0: [mem 0x000000009fc00000-0x00000000a0ffffff]
+[    0.000000]   node   0: [mem 0x00000000a1000000-0x00000000a135ffff]
+[    0.000000]   node   0: [mem 0x00000000a1360000-0x00000000a139ffff]
+[    0.000000]   node   0: [mem 0x00000000a13a0000-0x00000000a13fffff]
+[    0.000000]   node   0: [mem 0x00000000a1400000-0x00000000a61b3fff]
+[    0.000000]   node   0: [mem 0x00000000a61b4000-0x00000000b9efffff]
+[    0.000000]   node   0: [mem 0x00000000b9f00000-0x00000000bbffffff]
+[    0.000000]   node   0: [mem 0x00000000bc000000-0x00000000bdffffff]
+[    0.000000]   node   0: [mem 0x00000000be000000-0x00000000beffffff]
+[    0.000000]   node   0: [mem 0x00000000bf000000-0x00000000f6fcdfff]
+[    0.000000]   node   0: [mem 0x00000000f6fce000-0x00000000fff26fff]
+[    0.000000]   node   0: [mem 0x00000000fff27000-0x00000000ffffffff]
+[    0.000000]   node   0: [mem 0x0000000880000000-0x0000000affffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000080000000-0x0000000affffffff]
+[    0.000000] cma: Reserved 16 MiB at 0x0000000880000000 on node -1
+[    0.000000] psci: probing for conduit method from DT.
+[    0.000000] psci: PSCIv1.1 detected in firmware.
+[    0.000000] psci: Using standard PSCI v0.2 function IDs
+[    0.000000] psci: MIGRATE_INFO_TYPE not supported.
+[    0.000000] psci: SMC Calling Convention v1.2
+[    0.000000] psci: OSI mode supported.
+[    0.000000] Load bootconfig: 3981 bytes 144 nodes
+[    0.000000] percpu: Embedded 31 pages/cpu s95264 r0 d31712 u126976
+[    0.000000] pcpu-alloc: s95264 r0 d31712 u126976 alloc=31*4096
+[    0.000000] pcpu-alloc: [0] 0 [0] 1 [0] 2 [0] 3 [0] 4 [0] 5 [0] 6 [0] 7 
+[    0.000000] Detected PIPT I-cache on CPU0
+[    0.000000] CPU features: SYS_ID_AA64MMFR1_EL1[11:8]: forced to 0
+[    0.000000] CPU features: SYS_ID_AA64PFR1_EL1[11:8]: forced to 0
+[    0.000000] CPU features: detected: Address authentication (architected QARMA3 algorithm)
+[    0.000000] CPU features: detected: GIC system register CPU interface
+[    0.000000] CPU features: detected: HCRX_EL2 register
+[    0.000000] CPU features: detected: Hardware dirty bit management
+[    0.000000] CPU features: detected: Spectre-v4
+[    0.000000] CPU features: kernel page table isolation disabled by kernel configuration
+[    0.000000] CPU features: detected: ARM errata 2966298, 3117295
+[    0.000000] alternatives: applying boot alternatives

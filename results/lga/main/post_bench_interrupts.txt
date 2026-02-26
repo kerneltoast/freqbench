@@ -1,0 +1,108 @@
+           CPU0       
+ 18:          0     GICv3  25 Level     vgic
+ 20:          0     GICv3  27 Level     kvm guest vtimer
+ 23:       3117     GICv3  30 Level     arch_timer
+ 25:          0  GICv3-23   0 Level     arm-pmu
+ 26:          0  GICv3-23   1 Level     arm-pmu
+ 27:          0     GICv3  32 Level     b4a0000.aoc_ap_0_mba_client_0
+ 28:          0     GICv3  33 Level     b4a1000.aoc_ap_1_mba_client_1
+ 29:          0     GICv3  34 Level     b4a2000.aoc_ap_2_mba_client_2
+ 30:          0     GICv3  35 Level     b4a3000.aoc_ap_3_mba_client_3
+ 31:          0     GICv3  36 Level     b4a4000.aoc_ap_4_mba_client_4
+ 32:          0     GICv3  37 Level     b4a5000.aoc_ap_5_mba_client_5
+ 33:          0     GICv3  38 Level     b4a6000.aoc_ap_6_mba_client_6
+ 34:          0     GICv3  39 Level     b4a7000.aoc_ap_7_mba_client_7
+ 35:          0     GICv3  40 Level     b4a8000.aoc_ap_8_mba_client_8
+ 36:          0     GICv3  41 Level     b4a9000.aoc_ap_9_mba_client_9
+ 37:          0     GICv3  42 Level     b4aa000.aoc_ap_10_mba_client_10
+ 38:          0     GICv3  43 Level     b4ab000.aoc_ap_11_mba_client_11
+ 39:          0     GICv3  44 Level     b4ac000.aoc_ap_12_mba_client_12
+ 40:          0     GICv3  45 Level     b4ad000.aoc_ap_13_mba_client_13
+ 41:          0     GICv3  46 Level     b4ae000.aoc_ap_14_mba_client_14
+ 42:          0     GICv3  47 Level     b4af000.aoc_ap_15_mba_client_15
+ 43:          0     GICv3  48 Level     b4b0000.aoc_ap_16_mba_client_16
+ 44:          0     GICv3  49 Level     b4b1000.aoc_ap_17_mba_client_17
+ 45:          0     GICv3  50 Level     b4b2000.aoc_ap_18_mba_client_18
+ 46:          0     GICv3  51 Level     b4b3000.aoc_ap_19_mba_client_19
+ 47:         33     GICv3 982 Level     e010000.gsa_ap_0_mba_client_0
+ 48:          0     GICv3 334 Level     6262000.gdmc_ap_non_secure_req_mba_client_2
+ 49:          0     GICv3 335 Level     6263000.gdmc_ap_non_secure_resp_mba_client_3
+ 50:          0     GICv3 336 Level     6264000.gdmc_ap_critical_req_mba_client_4
+ 51:          0     GICv3 337 Level     6265000.gdmc_ap_critical_resp_mba_client_5
+ 52:          0     GICv3 338 Level     6266000.gdmc_ap1_req_mba_client_6
+ 53:          0     GICv3 339 Level     6267000.gdmc_ap1_resp_mba_client_7
+ 54:          0     GICv3 340 Level     6268000.gdmc_ap2_req_mba_client_8
+ 55:          0     GICv3 341 Level     6269000.gdmc_ap2_resp_mba_client_9
+ 56:          0     GICv3 342 Level     626a000.gdmc_ap3_req_mba_client_10
+ 57:          0     GICv3 343 Level     626b000.gdmc_ap3_resp_mba_client_11
+ 58:       2019     GICv3 282 Level     5260000.cpm_ap_ns_req_mba_client_0
+ 59:       2398     GICv3 283 Level     5261000.cpm_ap_ns_resp_mba_client_1
+100:          0  5280000.pinctrl  51 Edge      gpio-keys: KEY_VOLUMEDOWN
+101:          0  5280000.pinctrl  52 Edge      gpio-keys: KEY_VOLUMEUP
+102:          6  5280000.pinctrl  48 Edge      gpio-keys: KEY_POWER
+276:          0     GICv3 109 Level     10000000.pmu
+277:          0     GICv3  97 Level     arm_dsu_0
+278:          0     GICv3  13 Edge      trusty
+279:     605887     GICv3 135 Level     200c1000.sst
+312:          0   cpm_irq   0 Edge      da9188-rtc
+886:          0       GIA   3 Level   -lsios-level-aggr-4-intr@3bd60400  3bf31000.i2c
+887:        229       GIA   0 Level   -lsioe-level-aggr-4-intr@3a160400  3a301000.i2c
+888:          0       GIA   1 Level   -lsioe-level-aggr-4-intr@3a160400  3a311000.i2c
+889:          0       GIA   3 Level   -lsioe-level-aggr-4-intr@3a160400  3a331000.i2c
+890:          0       GIA   6 Level   -lsioe-level-aggr-4-intr@3a160400  3a361000.i2c
+891:          0       GIA   6 Level   -lsios-level-aggr-4-intr@3bd60400  3bf63000.spi
+892:          4       GIA   7 Level   -lsioe-level-aggr-4-intr@3a160400  3a371000.i2c
+893:          0       GIA   5 Level   -lsion-level-aggr-4-intr@d960400  db53000.spi
+894:          0       GIA   1 Level   -lsion-level-aggr-4-intr@d960400  db13000.spi
+895:          0       GIA   2 Level   -lsion-level-aggr-4-intr@d960400  db23000.spi
+896:          3       GIA   1 Level   -lsios-level-aggr-4-intr@3bd60400  3bf14000.i3c-master
+897:          0       GIA   3 Level   -lsion-level-aggr-4-intr@d960400  db33000.spi
+899:          0       GIA  10 Edge    -cpuacc-pulse-aggr-0-intr@5cd2000  arm-smmu-v3-evtq
+901:          0       GIA   8 Edge    -cpuacc-pulse-aggr-0-intr@5cd2000  arm-smmu-v3-gerror
+902:          0       GIA   0 Edge    -dpu-pulse-aggr-13-intr@ef8f0dc  arm-smmu-v3-evtq
+904:          0       GIA   0 Edge    -dpu-pulse-aggr-16-intr@ef8f104  arm-smmu-v3-gerror
+905:          0       GIA   0 Edge    -ispfe-pulse-aggr-5-intr@fde6010  arm-smmu-v3-evtq
+907:          0       GIA   2 Edge    -ispfe-pulse-aggr-5-intr@fde6010  arm-smmu-v3-gerror
+908:          0       GIA   0 Edge    -gpu-pulse-aggr-4-intr@34d02000  arm-smmu-v3-evtq
+909:          0       GIA   2 Edge    -gpu-pulse-aggr-4-intr@34d02000  arm-smmu-v3-gerror
+910:          0       GIA   0 Edge    -inftcu-pulse-aggr-0-intr@350d1000  arm-smmu-v3-evtq
+912:          0       GIA   2 Edge    -inftcu-pulse-aggr-0-intr@350d1000  arm-smmu-v3-gerror
+913:          0       GIA  23 Edge    -tpu-pulse-aggr-0-intr@36310000  arm-smmu-v3-evtq
+915:          0       GIA  21 Edge    -tpu-pulse-aggr-0-intr@36310000  arm-smmu-v3-gerror
+916:          0       GIA   0 Edge    -aurdsp-pulse-aggr-4-intr@38068000  arm-smmu-v3-evtq
+918:          0       GIA   2 Edge    -aurdsp-pulse-aggr-4-intr@38068000  arm-smmu-v3-gerror
+919:        139       GIA  17 Level   -hsios-multicast-aggr-6-intr@3c253060  ufshcd
+920:          0       GIA   0 Level   -gpdma-multicast-aggr-5-intr@3b952000  3b990000.dma-controller
+921:          0       GIA   1 Level   -gpdma-multicast-aggr-5-intr@3b952000  3b990000.dma-controller
+922:          0       GIA   2 Level   -gpdma-multicast-aggr-5-intr@3b952000  3b990000.dma-controller
+923:          0       GIA   3 Level   -gpdma-multicast-aggr-5-intr@3b952000  3b990000.dma-controller
+924:          0       GIA   4 Level   -gpdma-multicast-aggr-5-intr@3b952000  3b990000.dma-controller
+925:          0       GIA   5 Level   -gpdma-multicast-aggr-5-intr@3b952000  3b990000.dma-controller
+926:          0       GIA   6 Level   -gpdma-multicast-aggr-5-intr@3b952000  3b990000.dma-controller
+927:          0       GIA   7 Level   -gpdma-multicast-aggr-5-intr@3b952000  3b990000.dma-controller
+928:          0       GIA   6 Level   -gpdma-multicast-aggr-9-intr@3b956020  3b990000.dma-controller
+929:          0       GIA   0 Level   -gpdma-multicast-aggr-6-intr@3b953000  3b9a0000.dma-controller
+930:          0       GIA   1 Level   -gpdma-multicast-aggr-6-intr@3b953000  3b9a0000.dma-controller
+931:          0       GIA   2 Level   -gpdma-multicast-aggr-6-intr@3b953000  3b9a0000.dma-controller
+932:          0       GIA   3 Level   -gpdma-multicast-aggr-6-intr@3b953000  3b9a0000.dma-controller
+933:          0       GIA   4 Level   -gpdma-multicast-aggr-6-intr@3b953000  3b9a0000.dma-controller
+934:          0       GIA   5 Level   -gpdma-multicast-aggr-6-intr@3b953000  3b9a0000.dma-controller
+935:          0       GIA   6 Level   -gpdma-multicast-aggr-6-intr@3b953000  3b9a0000.dma-controller
+936:          0       GIA   7 Level   -gpdma-multicast-aggr-6-intr@3b953000  3b9a0000.dma-controller
+937:          0       GIA   7 Level   -gpdma-multicast-aggr-9-intr@3b956020  3b9a0000.dma-controller
+938:        217     GICv3 574 Level     ufshcd-cq
+939:          0     GICv3 575 Level     ufshcd-cq
+940:          0     GICv3 576 Level     ufshcd-cq
+941:          0     GICv3 577 Level     ufshcd-cq
+942:          0     GICv3 578 Level     ufshcd-cq
+943:          0     GICv3 579 Level     ufshcd-cq
+944:          0     GICv3 580 Level     ufshcd-cq
+945:          0     GICv3 581 Level     ufshcd-cq
+IPI0:       239       Rescheduling interrupts
+IPI1:        24       Function call interrupts
+IPI2:         0       CPU stop interrupts
+IPI3:         0       CPU stop (for crash dump) interrupts
+IPI4:         0       Timer broadcast interrupts
+IPI5:         0       IRQ work interrupts
+IPI6:         0       CPU wake-up interrupts
+Err:          0

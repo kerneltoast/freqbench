@@ -1,0 +1,2 @@
+Kernel: Linux version 6.6.98-Sultan (sultan@sultan-box) (aarch64-linux-gnu-gcc (GCC) 14.2.0, GNU ld (GNU Binutils) 2.44) #1 SMP PREEMPT Wed Feb 25 14:48:57 PST 2026
+Python: Python 3.8.5

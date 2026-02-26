@@ -1,0 +1,2 @@
+Model: FRANKEL MP based on LGA;
+Compatible: google,lga-frankel;google,lga;

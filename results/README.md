@@ -46,3 +46,4 @@ These are reference freqbench results that have been collected from various devi
 | gs201      | GS201     | Tensor G2       | Google Pixel 7 Pro      | Verified |
 | zuma       | ZUMA      | Tensor G3       | Google Pixel 8 Pro      | Verified |
 | zumapro    | ZUMAPRO   | Tensor G4       | Google Pixel 9 Pro      | Verified |
+| lga        | LAGUNA    | Tensor G5       | Google Pixel 10         | Verified |
